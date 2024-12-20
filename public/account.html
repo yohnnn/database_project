@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}}</title>
+    <link rel="stylesheet" href="/public/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Навигация -->
+        <nav class="navbar">
+            <h1>
+                {{.Username}} 
+                {{if .IsAdmin}} 
+                    <span class="admin-tag">(admin)</span> 
+                {{end}}
+            </h1> <!-- Имя пользователя с меткой админа, если это администратор -->
+            <div class="account-button">
+                <a href="/account" class="action-button">My Account</a>
+            </div>
+        </nav>
+
+        <!-- Секция с оценками пользователя -->
+        <h2>Your Ratings</h2>
+        
+        {{if .Ratings}}
+            <ul class="ratings-list">
+                {{range .Ratings}}
+                    <li class="rating-item">
+                        <span class="release-name">{{.ReleaseName}}</span>
+                        <span class="score">{{.Score}}</span>
+                    </li>
+                {{end}}
+            </ul>
+        {{else}}
+            <p class="no-ratings">No ratings found.</p>
+        {{end}}
+
+        <!-- Секция с логами для админа -->
+        {{if .IsAdmin}}
+            <h2>Release Score Logs</h2>
+            {{if .Logs}}
+                <table class="logs-table">
+                    <thead>
+                        <tr>
+                            <th>Score</th>
+                            <th>Release ID</th>
+                            <th>User ID</th>
+                            <th>Created At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{range .Logs}}
+                            <tr>
+                                <td>{{.Score}}</td>
+                                <td>{{.ReleaseID}}</td>
+                                <td>{{.UserID}}</td>
+                                <td>{{.CreatedAt}}</td>
+                            </tr>
+                        {{end}}
+                    </tbody>
+                </table>
+            {{else}}
+                <p class="no-logs">No logs available.</p>
+            {{end}}
+
+            <!-- Кнопка добавления нового релиза -->
+            <div class="add-release-button">
+                <a href="/add-release" class="action-button">Add New Release</a>
+            </div>
+        {{end}}
+
+        <!-- Кнопка назад -->
+        <div class="back-button">
+            <a href="/releases" class="action-button">Back to Releases</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; rzt</p>
+    </footer>
+</body>
+</html>

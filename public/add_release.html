@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}}</title>
+    <link rel="stylesheet" href="/public/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Add New Release</h1>
+
+        <!-- Форма для добавления релиза -->
+        <form action="/add-release" method="POST">
+            <label for="releaseName">Release Name:</label>
+            <input type="text" id="releaseName" name="release_name" required>
+
+            <label for="artistName">Artist Name:</label>
+            <input type="text" id="artistName" name="artist_name" required>
+
+            <label for="genres">Genres (comma-separated):</label>
+            <input type="text" id="genres" name="genres" required>
+
+            <button type="submit" class="action-button">Add Release</button>
+        </form>
+
+        <!-- Кнопка назад -->
+        <div class="back-button">
+            <a href="/admin-panel" class="action-button">Back to Admin Panel</a>
+        </div>
+    </div>
+</body>
+</html>

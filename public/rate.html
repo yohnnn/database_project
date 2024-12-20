@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rate Release</title>
+    <link rel="stylesheet" href="/public/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Rate Release</h1>
+        <form id="rateForm">
+            <div class="form-group">
+                <label for="score">Your Score (1-10)</label>
+                <input type="number" id="score" name="score" min="1" max="10" required>
+            </div>
+            <input type="hidden" id="releaseId" value="">
+            <button type="submit" class="action-button">Submit</button>
+        </form>
+        <div id="rateError" style="color: red; display: none;"></div>
+    </div>
+
+    <script>
+        // Получение ID релиза из параметров URL
+        const params = new URLSearchParams(window.location.search);
+        const releaseId = params.get('id');
+        document.getElementById('releaseId').value = releaseId;
+
+        // Обработчик отправки формы
+        document.getElementById('rateForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const score = parseInt(document.getElementById('score').value, 10);
+
+            if (!releaseId || isNaN(score) || score < 1 || score > 10) {
+                alert('Please enter a valid score between 1 and 10.');
+                return;
+            }
+
+            try {
+                const response = await fetch('/rate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ release_id: parseInt(releaseId, 10), score })
+                });
+
+                if (response.ok) {
+                    alert('Thank you for rating!');
+                    window.location.href = '/releases'; // Перенаправление на страницу с релизами
+                } else {
+                    const error = await response.json();
+                    alert(error.error || 'Failed to submit rating.');
+                }
+            } catch (err) {
+                console.error('Error:', err);
+                alert('Something went wrong!');
+            }
+        });
+    </script>
+</body>
+</html>

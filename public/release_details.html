@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Release.ReleaseName}} - Details</title>
+    <link rel="stylesheet" href="/public/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>{{.Release.ReleaseName}}</h1>
+
+        <h2>Genres:</h2>
+        <ul>
+            {{range .Release.Genres}}
+                <li>{{.}}</li>
+            {{else}}
+                <li>No genres available</li>
+            {{end}}
+        </ul>
+
+        <h2>Average Score: {{.Release.AverageScore}}</h2>
+
+        <h2>User Ratings:</h2>
+        <ul>
+            {{range .Release.RatingDetails}}
+                <li>{{.Username}}: {{.Score}}</li>
+            {{else}}
+                <li>No ratings available</li>
+            {{end}}
+        </ul>
+
+        <div>
+            <a href="/releases" class="action-button">Back to Releases</a>
+        </div>
+    </div>
+</body>
+</html>

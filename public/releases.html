@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .Title }}</title>
+    <link rel="stylesheet" href="/public/style.css">
+    <style>
+        /* Кнопка "Мой аккаунт" */
+        .account-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .account-button .action-button {
+            background-color: #9b1b30; /* Бордовый цвет */
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 1em;
+        }
+
+        .account-button .action-button:hover {
+            background-color: #7a1423; /* Темнее при наведении */
+        }
+    </style>
+</head>
+<body>
+    <!-- Кнопка "Мой аккаунт" -->
+    <div class="account-button">
+        <a href="/account" class="action-button">Мой аккаунт</a>
+    </div>
+
+    <!-- Кнопка "Админ панель", доступная только для администраторов -->
+    {{ if .IsAdmin }}
+    <div class="account-button">
+        <a href="/admin" class="action-button">Админ панель</a>
+    </div>
+    {{ end }}
+
+    <div class="container">
+        <h1>Доступные релизы для оценки</h1>
+        <ul id="releases-list" class="releases-list"></ul>
+    </div>
+
+    <script>
+        async function fetchReleases() {
+            try {
+                const response = await fetch('/releases-data');
+                const data = await response.json();
+                const releasesList = document.getElementById('releases-list');
+                if (data.releases) {
+                    data.releases.forEach(release => {
+                        const li = document.createElement('li');
+                        li.classList.add('release-item');
+                        li.innerHTML = ` 
+                            <div class="release-info">
+                                <a href="/release/${release.id}" class="release-name">${release.release_name}</a>
+                                <span class="artist-name">by ${release.artist_name}</span>
+                                <span class="average-score">Average Score: ${release.average_score.toFixed(1)}</span>
+                            </div>
+                            <a href="/rate-release?id=${release.id}" class="action-button">Оценить</a>
+                        `;
+                        releasesList.appendChild(li);
+                    });
+                } else {
+                    releasesList.innerHTML = '<li class="no-releases">Нет доступных релизов</li>';
+                }
+            } catch (error) {
+                console.error('Error fetching releases:', error);
+                document.getElementById('releases-list').innerHTML = '<li class="no-releases">Ошибка загрузки релизов</li>';
+            }
+        }
+
+        fetchReleases();
+    </script>
+</body>
+</html>

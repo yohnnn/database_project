@@ -1,0 +1,435 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #121212; /* Темный фон */
+    color: #e0e0e0; /* Светлый текст */
+}
+
+.container {
+    max-width: 800px;
+    width: 90%; /* Адаптация для маленьких экранов */
+    padding: 20px;
+    background-color: #1e1e1e; /* Темный фон контейнера */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Тень */
+    border-radius: 12px; /* Скругленные края */
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.2em; /* Умеренный размер заголовка */
+    margin-bottom: 20px;
+    color: #9b1b30; /* Бордовый заголовок */
+}
+
+/* Стили для форм */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #e0e0e0;
+    font-size: 1.1em;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    background-color: #2c2c2c; /* Темный фон для инпутов */
+    border: none;
+    border-radius: 8px;
+    color: #f4f4f4;
+    font-size: 1em;
+}
+
+button {
+    padding: 12px 20px;
+    background-color: #9b1b30; /* Бордовая кнопка */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #7a1423; /* Темный бордовый при наведении */
+}
+
+/* Стили для сообщений об ошибках */
+#error {
+    color: red;
+    margin-top: 10px;
+}
+
+/* Стили для списка релизов */
+.releases-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Элемент списка */
+.release-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #2c2c2c; /* Фон элемента списка */
+    border-radius: 8px; /* Скругленные края */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Тень для элемента */
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+/* Эффект при наведении */
+.release-item:hover {
+    transform: scale(1.05); /* Увеличение при наведении */
+    background-color: #353535; /* Изменение цвета при наведении */
+}
+
+/* Информация о релизе */
+.release-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 75%; /* Ограничиваем ширину текста */
+}
+
+/* Название релиза */
+.release-name {
+    font-weight: bold;
+    font-size: 1.6em; /* Размер шрифта, чтобы было более сбалансировано */
+    color: #f4f4f4; /* Светлый текст для релиза */
+    text-transform: uppercase; /* Все буквы заглавные */
+    letter-spacing: 1px; /* Добавленное расстояние между буквами */
+    line-height: 1.3; /* Увеличена высота строки для лучшего восприятия */
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6); /* Добавлено легкое тень для улучшения контраста */
+}
+
+/* Имя артиста */
+.artist-name {
+    font-style: italic;
+    font-size: 1.1em; /* Уменьшенный размер для имени артиста */
+    color: #b0b0b0;
+}
+
+/* Кнопка действия */
+.action-button {
+    background-color: #9b1b30; /* Бордовая кнопка */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 18px; /* Уменьшенные отступы для кнопки */
+    cursor: pointer;
+    font-size: 1em; /* Умеренный размер шрифта */
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.action-button:hover {
+    background-color: #7a1423; /* Темный бордовый при наведении */
+    transform: scale(1.05);
+}
+
+/* Стили для сообщений об отсутствии релизов */
+.no-releases {
+    font-style: italic;
+    color: #b0b0b0;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+.account-button {
+    margin-right: 20px;
+}
+
+.account-button .action-button {
+    background-color: #9b1b30;
+    color: white;
+    padding: 8px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.account-button .action-button:hover {
+    background-color: #7a1423;
+}
+
+/* Общие стили для страницы аккаунта */
+.container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #1e1e1e; /* Темный фон */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #121212;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.navbar h1 {
+    color: #f4f4f4;
+    font-size: 1.8em;
+}
+
+.account-button .action-button {
+    background-color: #9b1b30;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.account-button .action-button:hover {
+    background-color: #7a1423;
+}
+
+/* Общий контейнер */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #1a1a1a; /* Темный фон */
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    color: #f4f4f4;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+/* Навигация */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #121212;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    color: #e0e0e0;
+}
+
+.navbar h1 {
+    font-size: 1.8em;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #f4f4f4;
+}
+
+.account-button .action-button {
+    background-color: #9b1b30;
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.account-button .action-button:hover {
+    background-color: #7a1423;
+    transform: scale(1.05);
+}
+
+/* Заголовки секций */
+.container h2 {
+    font-size: 1.4em;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #e0e0e0;
+    border-bottom: 2px solid #353535;
+    padding-bottom: 5px;
+}
+
+/* Список оценок */
+.ratings-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Стили для элемента списка оценок */
+.rating-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #2c2c2c;
+    border-radius: 8px;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.release-name {
+    font-weight: bold;
+    color: #f4f4f4;
+    font-size: 1em;
+}
+
+.score {
+    color: #9b1b30;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: center; /* Центрирование текста */
+}
+
+
+/* Сообщение об отсутствии оценок */
+.no-ratings {
+    font-style: italic;
+    color: #b0b0b0;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 1.2em;
+}
+
+/* Кнопка назад */
+.back-button {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.action-button {
+    background-color: #9b1b30;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.action-button:hover {
+    background-color: #7a1423;
+    transform: scale(1.05);
+}
+
+/* Подвал */
+footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #b0b0b0;
+    font-size: 0.9em;
+}
+/* Общий контейнер */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #1a1a1a; /* Темный фон */
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    color: #f4f4f4;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+.admin-tag {
+    font-size: 0.9em;
+    color: red;
+    font-weight: bold;
+}
+/* Заголовок */
+.container h1 {
+    font-size: 2em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #f4f4f4;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Подзаголовки */
+.container h2 {
+    font-size: 1.4em;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #e0e0e0;
+    border-bottom: 2px solid #353535;
+    padding-bottom: 5px;
+}
+
+/* Стили для списков */
+.container ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.container ul li {
+    padding: 10px;
+    background-color: #2c2c2c;
+    border-radius: 8px;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.container ul li:hover {
+    background-color: #353535;
+    transform: scale(1.05);
+}
+
+/* Стили для сообщения об отсутствии данных */
+.container ul li:last-child {
+    font-style: italic;
+    color: #b0b0b0;
+    text-align: center;
+}
+
+/* Стили для кнопки */
+.action-button {
+    display: inline-block;
+    margin-top: 20px;
+    background-color: #9b1b30;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.action-button:hover {
+    background-color: #7a1423;
+    transform: scale(1.05);
+}
+
+
