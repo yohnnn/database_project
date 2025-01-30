@@ -14,7 +14,6 @@ type NewReleaseRequest struct {
 	Genres      []string `json:"genres"`
 }
 
-// AddReleaseHandler добавляет новый релиз
 func AddReleaseHandler(db *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req NewReleaseRequest
@@ -24,7 +23,6 @@ func AddReleaseHandler(db *sql.DB) gin.HandlerFunc {
 			return
 		}
 
-		// Проверка или добавление артиста
 		var artistID int
 		err := db.QueryRow(`SELECT id FROM artists WHERE name = $1`, req.ArtistName).Scan(&artistID)
 		if err == sql.ErrNoRows {
@@ -40,7 +38,6 @@ func AddReleaseHandler(db *sql.DB) gin.HandlerFunc {
 			return
 		}
 
-		// Добавление релиза
 		var releaseID int
 		err = db.QueryRow(`INSERT INTO releases (name, artist_id) VALUES ($1, $2) RETURNING id`, req.ReleaseName, artistID).Scan(&releaseID)
 		if err != nil {
@@ -49,7 +46,6 @@ func AddReleaseHandler(db *sql.DB) gin.HandlerFunc {
 			return
 		}
 
-		// Проверка или добавление жанров и связывание с релизом
 		for _, genre := range req.Genres {
 			var genreID int
 			err := db.QueryRow(`SELECT id FROM genre WHERE genre = $1`, genre).Scan(&genreID)

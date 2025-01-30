@@ -1,6 +1,5 @@
 package models
 
-// User структура для описания пользователя
 type User struct {
 	ID       int64
 	Username string

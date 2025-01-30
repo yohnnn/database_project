@@ -9,7 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// ReleaseWithArtist структура для представления релиза и его автора
 type ReleaseWithArtist struct {
 	ID           int64   `json:"id"`
 	ReleaseName  string  `json:"release_name"`
@@ -17,26 +16,21 @@ type ReleaseWithArtist struct {
 	AverageScore float64 `json:"average_score"`
 }
 
-// RenderReleasesPage рендерит HTML-страницу для релизов
 func RenderReleasesPage(c *gin.Context) {
 	tmpl, err := template.ParseFiles("public/releases.html")
 	if err != nil {
-		// Логируем ошибку загрузки шаблона
 		log.Printf("Error loading template: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to load template"})
 		return
 	}
 
-	// Выполняем рендеринг шаблона
 	if err := tmpl.Execute(c.Writer, nil); err != nil {
-		// Логируем ошибку рендеринга
 		log.Printf("Error rendering template: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to render template"})
 		return
 	}
 }
 
-// GetReleasesData возвращает данные релизов в JSON-формате
 func GetReleasesData(db *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		query := `

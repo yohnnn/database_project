@@ -9,7 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Структуры для данных релиза
 type ReleaseDetails struct {
 	ReleaseName   string         `json:"release_name"`
 	Genres        []string       `json:"genres"`
@@ -22,12 +21,10 @@ type RatingDetail struct {
 	Score    int    `json:"score"`
 }
 
-// RenderReleaseDetails отображает информацию о релизе
 func RenderReleaseDetails(db *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		releaseID := c.Param("release_id")
 
-		// Получаем информацию о релизе, жанры, среднюю оценку и пользователей с их оценками
 		query := `
 			SELECT 
 				r.name AS release_name,
@@ -46,7 +43,6 @@ func RenderReleaseDetails(db *sql.DB) gin.HandlerFunc {
 			return
 		}
 
-		// Получаем жанры релиза
 		genreQuery := `
 			SELECT g.genre
 			FROM genre g
@@ -73,7 +69,6 @@ func RenderReleaseDetails(db *sql.DB) gin.HandlerFunc {
 		}
 		release.Genres = genres
 
-		// Получаем пользователей, которые оценили этот релиз и их оценки
 		userRatingsQuery := `
 			SELECT u.username, rs.score
 			FROM release_score rs
@@ -100,7 +95,6 @@ func RenderReleaseDetails(db *sql.DB) gin.HandlerFunc {
 		}
 		release.RatingDetails = ratingDetails
 
-		// Рендеринг HTML-шаблона с подробной информацией о релизе
 		tmpl, err := template.ParseFiles("public/release_details.html")
 		if err != nil {
 			log.Printf("Error loading template: %v", err)

@@ -10,7 +10,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// LoginHandler обработчик для авторизации
 func LoginHandler(db *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var input struct {
@@ -39,33 +38,28 @@ func LoginHandler(db *sql.DB) gin.HandlerFunc {
 			return
 		}
 
-		// Сохранение user_id в сессии
 		session := sessions.Default(c)
 		session.Set("user_id", user.ID)
 		session.Save()
 
-		// Перенаправление на страницу релизов
 		c.Redirect(http.StatusSeeOther, "/releases")
 	}
 }
 
-// RegisterHandler обработчик для регистрации
 func RegisterHandler(db *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var input struct {
 			Username string `json:"username"`
 			Password string `json:"password"`
 			Email    string `json:"email"`
-			RoleID   int64  `json:"role_id"` // Теперь роль задается по ID
+			RoleID   int64  `json:"role_id"`
 		}
 
-		// Проверка входных данных
 		if err := c.ShouldBindJSON(&input); err != nil || input.Username == "" || input.Password == "" || input.Email == "" || input.RoleID == 0 {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
 			return
 		}
 
-		// Проверка существующего пользователя
 		var exists bool
 		queryCheck := "SELECT EXISTS (SELECT 1 FROM users WHERE username = $1 OR email = $2)"
 		if err := db.QueryRow(queryCheck, input.Username, input.Email).Scan(&exists); err != nil {
@@ -77,7 +71,6 @@ func RegisterHandler(db *sql.DB) gin.HandlerFunc {
 			return
 		}
 
-		// Проверка роли
 		var roleExists bool
 		queryRole := "SELECT EXISTS (SELECT 1 FROM role WHERE id = $1)"
 		if err := db.QueryRow(queryRole, input.RoleID).Scan(&roleExists); err != nil || !roleExists {
@@ -85,14 +78,12 @@ func RegisterHandler(db *sql.DB) gin.HandlerFunc {
 			return
 		}
 
-		// Хэширование пароля
 		hashedPassword, err := utils.HashPassword(input.Password)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to hash password"})
 			return
 		}
 
-		// Вставка нового пользователя и извлечение его id
 		var userID int64
 		query := "INSERT INTO users (username, password_hash, email, role_id) VALUES ($1, $2, $3, $4) RETURNING id"
 		err = db.QueryRow(query, input.Username, hashedPassword, input.Email, input.RoleID).Scan(&userID)
@@ -101,12 +92,10 @@ func RegisterHandler(db *sql.DB) gin.HandlerFunc {
 			return
 		}
 
-		// Сохранение user_id в сессии
 		session := sessions.Default(c)
 		session.Set("user_id", userID)
 		session.Save()
 
-		// Перенаправление на страницу релизов
 		c.Redirect(http.StatusSeeOther, "/releases")
 	}
 }

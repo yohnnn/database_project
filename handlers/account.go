@@ -10,7 +10,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Структуры для данных
 type UserRating struct {
 	ReleaseName string `json:"release_name"`
 	Score       int    `json:"score"`
@@ -23,10 +22,8 @@ type ReleaseLog struct {
 	CreatedAt string `json:"created_at"`
 }
 
-// AccountHandler для страницы аккаунта
 func AccountHandler(db *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// Извлекаем user_id из сессии
 		session := sessions.Default(c)
 		userID := session.Get("user_id")
 		if userID == nil {
@@ -38,7 +35,6 @@ func AccountHandler(db *sql.DB) gin.HandlerFunc {
 		var username string
 		var accessRights int
 
-		// Получаем имя пользователя и роль из таблицы roles через user_id
 		err := db.QueryRow(`
 			SELECT u.username, r.access_rights 
 			FROM users u
@@ -50,7 +46,6 @@ func AccountHandler(db *sql.DB) gin.HandlerFunc {
 			return
 		}
 
-		// Получаем оценки пользователя из базы данных
 		query := `
             SELECT r.name, rs.score
             FROM release_score rs
@@ -65,7 +60,7 @@ func AccountHandler(db *sql.DB) gin.HandlerFunc {
 		}
 		defer rows.Close()
 		var logs []ReleaseLog
-		if accessRights == 2 { // Если пользователь администратор
+		if accessRights == 2 {
 			logQuery := `
         SELECT score, release_id, user_id, created_at
         FROM release_score_log
@@ -113,7 +108,6 @@ func AccountHandler(db *sql.DB) gin.HandlerFunc {
 			return
 		}
 
-		// Рендеринг шаблона с оценками и ролью
 		tmpl, err := template.ParseFiles("public/account.html")
 		if err != nil {
 			log.Printf("Error loading template: %v", err)
@@ -121,7 +115,6 @@ func AccountHandler(db *sql.DB) gin.HandlerFunc {
 			return
 		}
 
-		// Передаем информацию в шаблон
 		if err := tmpl.Execute(c.Writer, gin.H{
 			"Title":    "My Account",
 			"Username": username,

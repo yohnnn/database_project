@@ -16,11 +16,9 @@ func RenderRatePage(c *gin.Context) {
 		return
 	}
 
-	// Рендеринг страницы
 	tmpl.Execute(c.Writer, nil)
 }
 
-// RateReleaseHandler позволяет пользователю оценить релиз
 func RateReleaseHandler(db *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var input struct {
@@ -28,13 +26,11 @@ func RateReleaseHandler(db *sql.DB) gin.HandlerFunc {
 			Score     int   `json:"score"`
 		}
 
-		// Проверка правильности входных данных
 		if err := c.ShouldBindJSON(&input); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
 			return
 		}
 
-		// Извлекаем user_id из сессии
 		session := sessions.Default(c)
 		userID := session.Get("user_id")
 		if userID == nil {
@@ -48,13 +44,11 @@ func RateReleaseHandler(db *sql.DB) gin.HandlerFunc {
 			return
 		}
 
-		// Проверка диапазона оценки
 		if input.Score < 1 || input.Score > 10 {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid score range"})
 			return
 		}
 
-		// Проверяем, существует ли уже оценка для этого пользователя и релиза
 		var existingScore int
 		err := db.QueryRow("SELECT score FROM release_score WHERE release_id = $1 AND user_id = $2", input.ReleaseID, userIDInt).Scan(&existingScore)
 
@@ -63,7 +57,6 @@ func RateReleaseHandler(db *sql.DB) gin.HandlerFunc {
 			return
 		}
 
-		// Если оценка уже существует, обновляем её
 		if err == nil {
 			_, err := db.Exec(`
 				UPDATE release_score
@@ -75,7 +68,7 @@ func RateReleaseHandler(db *sql.DB) gin.HandlerFunc {
 				return
 			}
 		} else {
-			// Если записи нет, вставляем новую
+
 			_, err := db.Exec(`
 				INSERT INTO release_score (release_id, score, user_id)
 				VALUES ($1, $2, $3)
@@ -86,7 +79,6 @@ func RateReleaseHandler(db *sql.DB) gin.HandlerFunc {
 			}
 		}
 
-		// После успешной оценки перенаправляем на страницу с релизами
 		c.Redirect(http.StatusSeeOther, "/releases")
 	}
 }
